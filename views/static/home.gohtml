@@ -1,11 +1,12 @@
 {{define "yield"}}
-<!DOCTYPE html>
-<html>
   <h1><center>Welcome to Mapster!<center></h1>
   <p><center>A roadtrip augmentation tool<center></p>
   <input type="text", id ="start">
-  <div></div>
+  <br>
+  <br>
   <input type="text", id="end">
+  <br>
+  <br>
   <style>
     html,
     body {
@@ -21,20 +22,19 @@
     }
   </style>
   <body>
-    <div id="googleMap" style="width:75%;height:600px;"></div>
+    <div id="map" style="width:75%;height:600px;"></div>
+    <script>
+      var map;
+      function initMap() {
+        var mapProp= {
+          center: new google.maps.LatLng(33.7552,-101.8552),
+          zoom: 13,
+        };
+        map = new google.maps.Map(document.getElementById("map"), mapProp);
+      }
+    </script>
 
- <script>
- function myMap() {
- var mapProp= {
-     center:new google.maps.LatLng(33.7552,-101.8552),
-     zoom:10,
- };
- var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
- }
- </script>
-
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s&callback=myMap"></script>
-
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s&callback=initMap"></script>
   </body>
-  </html>
 {{end}}
