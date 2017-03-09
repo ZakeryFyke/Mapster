@@ -6,4 +6,6 @@ Click [here](https://golang.org/doc/install) and follow instructions.
 
 ##Required Packages
 ### Gorilla mux
+Click [here](https://github.com/gorilla/mux) and follow instructions to install.
+
 ### Google Maps
