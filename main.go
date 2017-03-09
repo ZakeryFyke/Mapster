@@ -8,6 +8,24 @@ import (
 )
 
 func main() {
+
+	// c, err := maps.NewClient(maps.WithAPIKey("AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s"))
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//
+	// mappy := &maps.DirectionsRequest{
+	// 	Origin:      "Lubbock",
+	// 	Destination: "Dallas",
+	// }
+	//
+	// resp, _, err := c.Directions(context.Background(), mappy)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//
+	// fmt.Println(resp)
+
 	staticController := controllers.NewStatic()
 
 	r := mux.NewRouter()
