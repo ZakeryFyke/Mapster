@@ -30,6 +30,7 @@ func main() {
 
 	r := mux.NewRouter()
 
+	r.Handle("/", staticController.Home).Methods("Get")
 	r.Handle("/home", staticController.Home).Methods("Get")
 	http.ListenAndServe(":3000", r)
 
