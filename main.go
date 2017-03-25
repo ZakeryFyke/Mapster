@@ -9,28 +9,16 @@ import (
 
 func main() {
 
-	// c, err := maps.NewClient(maps.WithAPIKey("AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s"))
-	// if err != nil {
-	// 	panic(err)
-	// }
-	//
-	// mappy := &maps.DirectionsRequest{
-	// 	Origin:      "Lubbock",
-	// 	Destination: "Dallas",
-	// }
-	//
-	// resp, _, err := c.Directions(context.Background(), mappy)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	//
-	// fmt.Println(resp)
-
 	staticController := controllers.NewStatic()
+	userController := controllers.NewUser()
 
 	r := mux.NewRouter()
 
-	r.Handle("/home", staticController.Home).Methods("Get")
+	r.Handle("/home",
+		staticController.Home).Methods("Get")
+	r.Handle("/", staticController.Home).Methods("Get")
+	r.HandleFunc("/signup", userController.New).Methods("GET")
+	r.HandleFunc("/signup", userController.Create).Methods("post")
 	http.ListenAndServe(":3000", r)
 
 }
