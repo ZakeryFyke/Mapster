@@ -49,8 +49,8 @@
     <script async defer>
       var directionsService;
       var directionsDisplay;
+      var markersArray = [];
       function Route() {
-        var markersArray = [];
         var stepDisplay = new google.maps.InfoWindow;
         if(directionsDisplay != null) {
           directionsDisplay.setMap(null);
@@ -58,14 +58,13 @@
         directionsService = new google.maps.DirectionsService;
         directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(map);
+        for(var i = 0; i < markersArray.length; i++) {
+          markersArray[i].setMap(null);
+        }
         calculateAndDisplayRoute(directionsService, directionsDisplay, markersArray, stepDisplay, map);
       }
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay, markerArray, stepDisplay, map) {
-
-        for(var i = 0; i < markerArray.length; i++) {
-          markerArray[i].setMap(null);
-        }
 
         directionsService.route({
           origin: document.getElementById('start').value,
