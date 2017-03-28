@@ -49,19 +49,27 @@
     <script async defer>
       var directionsService;
       var directionsDisplay;
+<<<<<<< HEAD
       var markersArray = [];
       function Route() {
         var stepDisplay = new google.maps.InfoWindow;
+=======
+      function Route() {
+>>>>>>> 476e2dfc98485e1b051688d338e116b2f768d735
         if(directionsDisplay != null) {
           directionsDisplay.setMap(null);
         }
         directionsService = new google.maps.DirectionsService;
         directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(map);
+<<<<<<< HEAD
         for(var i = 0; i < markersArray.length; i++) {
           markersArray[i].setMap(null);
         }
         calculateAndDisplayRoute(directionsService, directionsDisplay, markersArray, stepDisplay, map);
+=======
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
+>>>>>>> 476e2dfc98485e1b051688d338e116b2f768d735
       }
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay, markerArray, stepDisplay, map) {
@@ -73,13 +81,18 @@
         }, function(response, status) {
           if (status === 'OK') {
             directionsDisplay.setDirections(response);
+<<<<<<< HEAD
             showSteps(response, markerArray, stepDisplay, map);
+=======
+            addMarkRouteByFifty(response);
+>>>>>>> 476e2dfc98485e1b051688d338e116b2f768d735
           } else {
             window.alert('Directions request failed due to ' + status);
           }
         });
       }
 
+<<<<<<< HEAD
       function showSteps(directionResult, markerArray, stepDisplay, map) {
         var myRoute = directionResult.routes[0].legs[0];
         for(var i = 0; i < myRoute.steps.length; i++) {
@@ -103,6 +116,59 @@
       }
 
       document.getElementById('router').onclick = Route();
+=======
+      document.getElementById('router').onclick = Route();
+    </script>
+
+    <script src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=false">
+      func addMarkRouteByFifty(route) {
+        var markers = [];
+        var marker;
+        var geo = google.maps.geometry.spherical;
+        var path = route.overview_path;
+        var point = path[0];
+        var distance = 0;
+        var leg;
+        var overflow;
+        var pos;
+        var offset = 80000;
+
+        for(var start = 1; start < path.length; ++p) {
+
+          leg = Math.round(geo.computeDistanceBetween(point, path[start]));
+          d1 = distance;
+          distance += leg;
+          overflow = dist- (d1%offset);
+
+          if(distance >= offset && leg >= overflow) {
+            if(overflow &&  leg >= overflow) {
+              pos = geo.computeOffset(point, overflow, geo.computeHeading(point, path[start]));
+              marker.position = pos;
+              markers.push(new google.maps.Marker(marker));
+              distance -= offset;
+            }
+
+            while(distance >= offset) {
+              pos = geo.computeOffset(point, dist+overflow, geo.computeHeading(point, path[p]));
+              marker.position = pos;
+              markers.push(new google.maps.Marker(marker))
+              distance -= offset;
+            }
+          }
+          point = path[p];
+        }
+
+        for(var i = 0; i < markers.length; i++){
+          markers[i].setMap(map);
+        }
+        var mark = new google.maps.Marker({
+            postion: new google.maps.LatLng(33.7552,-101.8552),
+            tite: "Lubbock"
+        });
+        mark.setMap(map);
+      }
+
+>>>>>>> 476e2dfc98485e1b051688d338e116b2f768d735
     </script>
 
   </body>
