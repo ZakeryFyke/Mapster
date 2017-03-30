@@ -83,7 +83,7 @@
 
       function showSteps(directionResult, markerArray, stepDisplay, map) {
         var myRoute = directionResult.routes[0].legs[0];
-        for(var i = 0; i < myRoute.steps.length; i++) {
+        for(var i = 1; i < myRoute.steps.length-1; i++) {
           var spot = myRoute.steps[i].start_location;
           //alert("spot" + spot + myRoute.steps.length);
           infowindow = new google.maps.InfoWindow();
@@ -116,16 +116,22 @@
 
     function createMarker(place) {
       var placeLoc = place.geometry.location;
-      var marker = new google.maps.Marker({
-        map: map,
-        position: place.geometry.location
-      });
+      if(place.rating != null) {
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
 
-      google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(place.name);
-        infowindow.open(map, this);
-      });
+        var contentString = place.name;
+        if(place.rating != null){
+          contentString += "<br />Rating: " + place.rating;
+        }
 
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(contentString);
+          infowindow.open(map, this);
+        });
+      }
     }
 
     // function attachInstructionText(stepDisplay, marker, text, map) {
