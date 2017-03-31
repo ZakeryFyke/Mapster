@@ -124,16 +124,16 @@
 
     function createMarker(place) {
       var placeLoc = place.geometry.location;
-      if(place.rating != null) {
+      if(place.rating != null && place.photos[0] != null) {
         var marker = new google.maps.Marker({
           map: map,
           position: place.geometry.location
+          //icon: place.photos[0].getUrl({'maxWidth': 35, 'maxHeight': 35})
         });
 
-        var contentString = place.name;
-        if(place.rating != null){
-          contentString += "<br />Rating: " + place.rating;
-        }
+        //var contentString = place.name;
+        var photoUrl = place.photos[0].getUrl({'maxWidth': 250, 'maxHeight': 250});
+        var contentString =  "<img src=" + photoUrl + ">"+"<br />"+ place.name + "<br />Rating: " + place.rating;
 
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.setContent(contentString);
