@@ -12,6 +12,13 @@
   <input type="text", id="end">
   <br>
   <br>
+  <select id = "options">
+    <option>lodging</option>
+    <option>restaurant</option>
+    <option>museum</option>
+  </select>
+  <br>
+  <br>
   <input id ="router" type="button" value="Route!" onclick = "Route()"/>
   <br>
   <br>
@@ -87,11 +94,12 @@
           var spot = myRoute.steps[i].start_location;
           //alert("spot" + spot + myRoute.steps.length);
           infowindow = new google.maps.InfoWindow();
+          var item = document.getElementById("options");
           var service = new google.maps.places.PlacesService(map);
           service.nearbySearch({
           location: spot,
           radius: 15000,
-          type: ['lodging']
+          type: item.options[item.selectedIndex].text
         }, callback);
         //   var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
         //   marker.setMap(map);
