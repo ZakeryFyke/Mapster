@@ -43,6 +43,8 @@
     <div id="map" style="width:75%;height:600px;"></div>
     <script>
       var map;
+
+      // initMap initilizes the google map centered at Lubbock.
       function initMap() {
         var mapProp= {
           center: new google.maps.LatLng(33.7552,-101.8552),
@@ -58,6 +60,9 @@
       var directionsService;
       var markersArray = [];
       var infowindow;
+
+      // Route will create new direction service, and also it will remove
+      // all markers that exist if a previous route has been constructed.
       function Route() {
         var stepDisplay = new google.maps.InfoWindow;
         if(directionsDisplay != null) {
@@ -72,6 +77,8 @@
         calculateAndDisplayRoute(directionsService, directionsDisplay, markersArray, stepDisplay, map);
       }
 
+      // calculateAndDisplayRoute will route between point A and B and will
+      // call the funcitonality to add the markers along the route.
       function calculateAndDisplayRoute(directionsService, directionsDisplay, markerArray, stepDisplay, map) {
         directionsService.route({
           origin: document.getElementById('start').value,
@@ -87,33 +94,30 @@
         });
       }
 
-
+      //showSets will go through each directionResult instreaction and do the
+      //nearby search at those points.  This will be changed to be equally
+      //incremental points along the route instead of direction changes.
       function showSteps(directionResult, markerArray, stepDisplay, map) {
         var myRoute = directionResult.routes[0].legs[0];
         for(var i = 1; i < myRoute.steps.length-1; i++) {
+
           var spot = myRoute.steps[i].start_location;
-          //alert("spot" + spot + myRoute.steps.length);
+
           infowindow = new google.maps.InfoWindow();
+
           var item = document.getElementById("options");
           var service = new google.maps.places.PlacesService(map);
+
           service.nearbySearch({
           location: spot,
           radius: 15000,
           type: item.options[item.selectedIndex].text
         }, callback);
-        //   var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
-        //   marker.setMap(map);
-        //   marker.setPosition(myRoute.steps[i].start_location);
-        //   attachInstructionText(
-        //       stepDisplay, marker, myRoute.steps[i].instructions, map);
-        // }
-        // for(var i = 0; i < markersArray.length; i++) {
-        //   markersArray[i].setMap(map);
-        // }
+
       }
     }
 
-
+    //callback function to createMarkers for the nearby search
     function callback(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
@@ -122,19 +126,22 @@
         }
     }
 
+    // createMarker takes in a place and creates the infowondow markersArray.
+    // places markers on the map and adds to the maker array.
     function createMarker(place) {
       var placeLoc = place.geometry.location;
-      if(place.rating != null && place.photos[0] != null) {
+      if(place.rating != null && place.photos != null) {
         var marker = new google.maps.Marker({
           map: map,
           position: place.geometry.location
           //icon: place.photos[0].getUrl({'maxWidth': 35, 'maxHeight': 35})
         });
 
-        //var contentString = place.name;
+        //photUrl is the location of the photo to be placed in the
         var photoUrl = place.photos[0].getUrl({'maxWidth': 250, 'maxHeight': 250});
         var contentString =  "<img src=" + photoUrl + ">"+"<br />"+ place.name + "<br />Rating: " + place.rating;
 
+        // addListener for click marker
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.setContent(contentString);
           infowindow.open(map, this);
@@ -143,17 +150,6 @@
         markersArray.push(marker);
       }
     }
-
-    // function attachInstructionText(stepDisplay, marker, text, map) {
-    //     google.maps.event.addListener(marker, 'click', function() {
-    //       // Open an info window when the marker is clicked on, containing the text
-    //       // of the step.
-    //       stepDisplay.setContent(text);
-    //       stepDisplay.open(map, marker);
-    //     });
-    //   }
-    //
-    //   document.getElementById('router').onclick = Route();
 
     </script>
   </body>
