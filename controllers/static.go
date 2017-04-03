@@ -4,6 +4,7 @@ import "github.com/RyanMcBerg/Mapster/views"
 
 //Controller for all of our static pages, which will likely be most of our pages.
 
+// NewStatic controlloer  for all of our static pages, which will likely be most of our pages.
 func NewStatic() *Static {
 	return &Static{
 		Home: views.NewView("bootstrap", "static/home"),

@@ -6,12 +6,12 @@ import (
 	"path/filepath"
 )
 
-var ViewsDir string = "views"
-var ViewsExt string = ".gohtml"
-var LayoutDir string = ViewsDir + "/layouts"
+var viewsDir = "views"
+var viewsExt = ".gohtml"
+var layoutDir = viewsDir + "/layouts"
 
 func layoutFiles() []string {
-	files, err := filepath.Glob(LayoutDir + "/*" + ViewsExt)
+	files, err := filepath.Glob(layoutDir + "/*" + viewsExt)
 	if err != nil {
 		panic(err)
 	}
@@ -34,7 +34,7 @@ func NewView(layout string, files ...string) *View {
 	}
 }
 
-//View, This is a View
+//View contains a template and a loyout
 type View struct {
 	Template *template.Template
 	Layout   string
@@ -54,13 +54,13 @@ func (v *View) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 //Function to add directory prefixes so i dont have to manually from now on
 func addViewsDirPrefix(files []string) {
 	for i, f := range files {
-		files[i] = ViewsDir + "/" + f
+		files[i] = viewsDir + "/" + f
 	}
 }
 
 //Function to add .gohtml extensions so I don't have to manually
 func addViewExtSuffix(files []string) {
 	for i, f := range files {
-		files[i] = f + ViewsExt
+		files[i] = f + viewsExt
 	}
 }
