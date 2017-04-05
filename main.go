@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 
-	"github.com/RyanMcBerg/Mapster/controllers"
 	"github.com/gorilla/mux"
 )
 

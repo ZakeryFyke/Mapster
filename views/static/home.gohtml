@@ -78,11 +78,12 @@
       }
 
       // calculateAndDisplayRoute will route between point A and B and will
-      // call the funcitonality to add the markers along the route.
+      // call the functionality to add the markers along the route.
       function calculateAndDisplayRoute(directionsService, directionsDisplay, markerArray, stepDisplay, map) {
         directionsService.route({
           origin: document.getElementById('start').value,
           destination: document.getElementById('end').value,
+          // The default is driving, but this provides clarity and possible later flexibility
           travelMode: 'DRIVING'
         }, function(response, status) {
           if (status === 'OK') {

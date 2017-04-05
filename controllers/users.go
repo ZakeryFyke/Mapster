@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ZakeryFyke/Mapster/views"
+	"github.com/ZakeryFyke/Mapster/Mapster/views"
 )
 
 //NewUser returns a User.
