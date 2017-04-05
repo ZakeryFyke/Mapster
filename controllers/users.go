@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/RyanMcBerg/Mapster/views"
+	"github.com/ZakeryFyke/Mapster/views"
 )
 
 //NewUser returns a User.
@@ -14,7 +14,7 @@ func NewUser() *Users {
 	}
 }
 
-//Users  contains a pointer to a view
+//Users contains a pointer to a view
 type Users struct {
 	NewView *views.View
 }
@@ -30,7 +30,7 @@ func (u *Users) New(w http.ResponseWriter, r *http.Request) {
 	u.NewView.Render(w, nil)
 }
 
-// Create fills the form and applises it to a user.
+// Create fills the form and applies it to a user.
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	form := SignupForm{}
 	if err := parseForm(r, &form); err != nil {

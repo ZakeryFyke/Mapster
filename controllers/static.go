@@ -1,6 +1,6 @@
 package controllers
 
-import "github.com/RyanMcBerg/Mapster/views"
+import "github.com/ZakeryFyke/Mapster/views"
 
 //Controller for all of our static pages, which will likely be most of our pages.
 
