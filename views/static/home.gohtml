@@ -1,5 +1,21 @@
 {{define "yield"}}
 
+
+<script src="https://www.gstatic.com/firebasejs/3.7.5/firebase.js"></script>
+<script>
+//This probably shouldn't be here, but whatever
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDtoSphTd9081SpWkSi5kcRG_7tM1V-jdA",
+    authDomain: "mapster-8f210.firebaseapp.com",
+    databaseURL: "https://mapster-8f210.firebaseio.com",
+    projectId: "mapster-8f210",
+    storageBucket: "mapster-8f210.appspot.com",
+    messagingSenderId: "320669222015"
+  };
+  firebase.initializeApp(config);
+</script>
+
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s&libraries=places&callback=initMap">
 </script>
@@ -150,6 +166,14 @@
 
         markersArray.push(marker);
       }
+    }
+
+    function createAccount(email, password){
+      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+      });
     }
 
     </script>

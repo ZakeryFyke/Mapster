@@ -50,9 +50,10 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	if err := parseForm(r, &form); err != nil {
 		panic(err)
 	}
-	fmt.Fprintln(w, "Email is", form.Email)
-	fmt.Fprintln(w, "Password is", form.Password)
-	fmt.Fprintln(w, "Confirm password is", form.ConfirmPassword)
+	//createAccount(form.Email, form.Password)
+	//fmt.Fprintln(w, "Email is", form.Email)
+	//fmt.Fprintln(w, "Password is", form.Password)
+	//fmt.Fprintln(w, "Confirm password is", form.ConfirmPassword)
 }
 
 // There's a better way to do this than rewrite a bunch of code, but it's fake
