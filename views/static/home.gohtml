@@ -17,7 +17,7 @@
 </script>
 
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s&libraries=places&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s&libraries=places,geometry&callback=initMap">
 </script>
 
   <h1><center>Welcome to Mapster!<center></h1>
@@ -114,23 +114,40 @@
       //showSets will go through each directionResult instreaction and do the
       //nearby search at those points.  This will be changed to be equally
       //incremental points along the route instead of direction changes.
+      // google.maps.geometry.spherical.computeDistanceBetween (latLngA, latLngB);
+
       function showSteps(directionResult, markerArray, stepDisplay, map) {
         var myRoute = directionResult.routes[0].legs[0];
-        for(var i = 1; i < myRoute.steps.length-1; i++) {
 
-          var spot = myRoute.steps[i].start_location;
+        var start = myRoute.steps[0].start_location;
+        var end = myRoute.steps[myRoute.steps.length-1].start_location;
+        console.log("Hi");
+        for(var i = 1; i < myRoute.steps.length-2; i++) {
 
-          infowindow = new google.maps.InfoWindow();
+          var startloc = myRoute.steps[i].start_location;
+          var endpos = myRoute.steps[i+1].start_location;
+          console.log("for");
+          //console.log(google.maps.geometry.spherical.computeDistanceBetween(startloc, endpos) > 32150);
+          //console.log(google.maps.geometry.spherical.computeDistanceBetween(startloc, start) > 321868);
+          //console.log(google.maps.geometry.spherical.computeDistanceBetween(startloc, end) > 321868);
 
-          var item = document.getElementById("options");
-          var service = new google.maps.places.PlacesService(map);
+          while(google.maps.geometry.spherical.computeDistanceBetween(startloc, endpos) > 32186 && google.maps.geometry.spherical.computeDistanceBetween(startloc, start) > 200000 && google.maps.geometry.spherical.computeDistanceBetween(startloc, end) > 200000) {
+            //console.log("potato");
+            var heading = google.maps.geometry.spherical.computeHeading(startloc, endpos);
+            var spot = google.maps.geometry.spherical.computeOffset(startloc, 32186, heading);
+            startloc = spot;
 
-          service.nearbySearch({
-          location: spot,
-          radius: 15000,
-          type: item.options[item.selectedIndex].text
-        }, callback);
+            infowindow = new google.maps.InfoWindow();
 
+            var item = document.getElementById("options");
+            var service = new google.maps.places.PlacesService(map);
+
+            service.nearbySearch({
+            location: spot,
+            radius: 15000,
+            type: item.options[item.selectedIndex].text
+          }, callback);
+        }
       }
     }
 
