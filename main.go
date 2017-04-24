@@ -15,7 +15,7 @@ func main() {
 	loginController := controllers.ExistingUser()
 
 	r := mux.NewRouter()
-
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./public"))))
 	r.Handle("/home",
 		staticController.Home).Methods("Get")
 	r.Handle("/", staticController.Home).Methods("Get")
