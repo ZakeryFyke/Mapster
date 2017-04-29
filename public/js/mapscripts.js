@@ -2,6 +2,7 @@
   var directionsDisplay;
   var directionsService;
   var markersArray = [];
+  var waypoints = [];
   var infowindow;
   var startloc;
   var service;
@@ -107,7 +108,8 @@
   // createMarker takes in a place and creates the infowindow markersArray.
   // places markers on the map and adds to the markersArray.
   function createMarker(place) {
-    var placeLoc = place.geometry.location;
+    var placelat = place.geometry.location.lat();
+    var placelong = place.geometry.location.lng();
     if(place.rating != null && place.photos != null) {
       var marker = new google.maps.Marker({
         map: map,
@@ -117,7 +119,10 @@
       //console.log(marker.position.toString());
       //photUrl is the location of the photo to be placed in the
       var photoUrl = place.photos[0].getUrl({'maxWidth': 250, 'maxHeight': 250});
-      var contentString =  "<img src=" + photoUrl + ">"+"<br />"+ place.name + "<br />Rating: " + place.rating;
+      var contentString =  "<img src=" + photoUrl + ">"+"<br />"+
+                            place.name + "<br />Rating: " +
+                            place.rating + "<br/ >" +
+                            '<button onclick="addWaypoint('+ placelat +',' + placelong + ')">Add to Route</button>';
 
       // addListener for click marker
       google.maps.event.addListener(marker, 'click', function() {
@@ -128,6 +133,47 @@
       markersArray.push(marker);
     }
   }
+
+  function addWaypoint(lat, long) {
+      waypoints.push({
+        location: new google.maps.LatLng(lat, long),
+        stopover: true
+      });
+      console.log(waypoints);
+  }
+  window.addWaypoint = addWaypoint;
+
+  function genFinalRoute() {
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer;
+    if(directionsDisplay != null) {
+      directionsDisplay.setMap(null);
+    }
+    for(var i = 0; i < markersArray.length; i++) {
+      markersArray[i].setMap(null);
+    }
+
+    directionsDisplay.setMap(map);
+
+
+
+    directionsService.route({
+      origin: document.getElementById('start').value,
+      destination: document.getElementById('end').value,
+      waypoints: waypoints,
+      optimizeWaypoints: true,
+      // The default is driving, but this provides clarity and possible later flexibility
+      travelMode: 'DRIVING'
+    }, function(response, status) {
+      if (status === 'OK') {
+        directionsDisplay.setDirections(response);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+  }
+  window.genFinalRoute = genFinalRoute;
+
 
   function nearbyClosure(startloc, service, item, callback) {
     return function() {
