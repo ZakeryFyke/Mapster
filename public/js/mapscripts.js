@@ -19,10 +19,13 @@
     directionsService = new google.maps.DirectionsService;
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById('directions').innerHTML = "");
+    directionsDisplay.setPanel(document.getElementById('directions'));
 
     for(var i = 0; i < markersArray.length; i++) {
       markersArray[i].setMap(null);
     }
+    waypoints = [];
     markersArray = [];
 
     calculateAndDisplayRoute(directionsService, directionsDisplay, markersArray, stepDisplay, map);
@@ -40,6 +43,7 @@
     }, function(response, status) {
       if (status === 'OK') {
         directionsDisplay.setDirections(response);
+        printDirections(response);
         showSteps(response, markerArray, stepDisplay, map);
       } else {
         window.alert('Directions request failed due to ' + status);
@@ -134,15 +138,19 @@
     }
   }
 
+  // addWaypoint to the waypoints array based on the LatLng of the point
+  // these waypoints will be added to the final route.
   function addWaypoint(lat, long) {
       waypoints.push({
         location: new google.maps.LatLng(lat, long),
         stopover: true
       });
-      console.log(waypoints);
   }
+  // make this function public so it can be called from the html.
   window.addWaypoint = addWaypoint;
 
+  // genFinalRoute will generate the final route between point A and B as well
+  // as include any waypoints that have been added.
   function genFinalRoute() {
     directionsService = new google.maps.DirectionsService;
     directionsDisplay = new google.maps.DirectionsRenderer;
@@ -154,6 +162,8 @@
     }
 
     directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById('directions').innerHTML = "");
+    directionsDisplay.setPanel(document.getElementById('directions'));
 
 
 
@@ -172,8 +182,12 @@
       }
     });
   }
+  // again this needs to be made public so the user can access.
   window.genFinalRoute = genFinalRoute;
 
+  function printDirections(response) {
+
+  }
 
   function nearbyClosure(startloc, service, item, callback) {
     return function() {
