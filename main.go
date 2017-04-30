@@ -3,7 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/ZakeryFyke/Mapster/Mapster/controllers"
+	"github.com/RyanMcBerg/Mapster/controllers"
+	//"github.com/ZakeryFyke/Mapster/Mapster/controllers"
 	"github.com/gorilla/mux"
 )
 
@@ -14,7 +15,7 @@ func main() {
 	loginController := controllers.ExistingUser()
 
 	r := mux.NewRouter()
-
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./public"))))
 	r.Handle("/home",
 		staticController.Home).Methods("Get")
 	r.Handle("/", staticController.Home).Methods("Get")

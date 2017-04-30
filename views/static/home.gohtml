@@ -17,7 +17,7 @@
 </script>
 
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s&libraries=places&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGGxruyyZKhj9fzWk-hTDohDsU8cfIi3s&libraries=places,geometry&callback=initMap">
 </script>
 
   <h1><center>Welcome to Mapster!<center></h1>
@@ -36,6 +36,7 @@
   <br>
   <br>
   <input id ="router" type="button" value="Route!" onclick = "Route()"/>
+  <input id ="final router" type="button" value="Generate Final Route" onclick = "genFinalRoute()"/>
   <br>
   <br>
   <style>
@@ -57,6 +58,8 @@
 
   <body>
     <div id="map" style="width:75%;height:600px;"></div>
+    <br />
+    <div id = "directions"></div>
     <script>
       var map;
 
@@ -71,111 +74,6 @@
 
     </script>
 
-    <script async defer>
-      var directionsDisplay;
-      var directionsService;
-      var markersArray = [];
-      var infowindow;
-
-      // Route will create new direction service, and also it will remove
-      // all markers that exist if a previous route has been constructed.
-      function Route() {
-        var stepDisplay = new google.maps.InfoWindow;
-        if(directionsDisplay != null) {
-          directionsDisplay.setMap(null);
-        }
-        directionsService = new google.maps.DirectionsService;
-        directionsDisplay = new google.maps.DirectionsRenderer;
-        directionsDisplay.setMap(map);
-        for(var i = 0; i < markersArray.length; i++) {
-          markersArray[i].setMap(null);
-        }
-        calculateAndDisplayRoute(directionsService, directionsDisplay, markersArray, stepDisplay, map);
-      }
-
-      // calculateAndDisplayRoute will route between point A and B and will
-      // call the functionality to add the markers along the route.
-      function calculateAndDisplayRoute(directionsService, directionsDisplay, markerArray, stepDisplay, map) {
-        directionsService.route({
-          origin: document.getElementById('start').value,
-          destination: document.getElementById('end').value,
-          // The default is driving, but this provides clarity and possible later flexibility
-          travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-            showSteps(response, markerArray, stepDisplay, map);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
-      }
-
-      //showSets will go through each directionResult instreaction and do the
-      //nearby search at those points.  This will be changed to be equally
-      //incremental points along the route instead of direction changes.
-      function showSteps(directionResult, markerArray, stepDisplay, map) {
-        var myRoute = directionResult.routes[0].legs[0];
-        for(var i = 1; i < myRoute.steps.length-1; i++) {
-
-          var spot = myRoute.steps[i].start_location;
-
-          infowindow = new google.maps.InfoWindow();
-
-          var item = document.getElementById("options");
-          var service = new google.maps.places.PlacesService(map);
-
-          service.nearbySearch({
-          location: spot,
-          radius: 15000,
-          type: item.options[item.selectedIndex].text
-        }, callback);
-
-      }
-    }
-
-    //callback function to createMarkers for the nearby search
-    function callback(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          for (var i = 0; i < results.length; i++) {
-            createMarker(results[i]);
-          }
-        }
-    }
-
-    // createMarker takes in a place and creates the infowindow markersArray.
-    // places markers on the map and adds to the markersArray.
-    function createMarker(place) {
-      var placeLoc = place.geometry.location;
-      if(place.rating != null && place.photos != null) {
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location
-          //icon: place.photos[0].getUrl({'maxWidth': 35, 'maxHeight': 35})
-        });
-
-        //photUrl is the location of the photo to be placed in the
-        var photoUrl = place.photos[0].getUrl({'maxWidth': 250, 'maxHeight': 250});
-        var contentString =  "<img src=" + photoUrl + ">"+"<br />"+ place.name + "<br />Rating: " + place.rating;
-
-        // addListener for click marker
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(contentString);
-          infowindow.open(map, this);
-        });
-
-        markersArray.push(marker);
-      }
-    }
-
-    function createAccount(email, password){
-      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-      });
-    }
-
-    </script>
+    <script async defer src="/assets/js/mapscripts.js"></script>
   </body>
 {{end}}
